@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Header () {
 
   return (
-    <div className='header'><Link to="/"><img src="../public/formisfakelogo.png" alt="" /></Link></div>
+    <div className='header'><Link to="/"><img src="/formisfakelogo.png" alt="" /></Link></div>
   );
 }
 
