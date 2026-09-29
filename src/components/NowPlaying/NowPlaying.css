@@ -1,0 +1,74 @@
+.now-playing{
+  --section-bg: var(--white);
+  /* Nothing cuts in from above (it's the first section), so it skips the
+     usual clearance the other angled sections leave at the top, leaving
+     room for its ticker instead. */
+  --angled-padding-top: calc(var(--marquee-height) + var(--space-l));
+  --cut-clearance: 0px;
+  color: var(--black);
+  padding-inline: var(--space-m);
+  padding-bottom: var(--space-l);
+}
+
+/* The "Now playing" ticker: red on white. */
+.now-playing-marquee{
+  background-color: var(--white);
+  color: var(--red);
+}
+
+.show{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-m);
+}
+
+.show + .show{
+  margin-top: var(--space-l);
+  padding-top: var(--space-l);
+  border-top: 2px solid var(--black);
+}
+
+.show-image{
+  width: 420px;
+  max-width: 100%;
+  border-radius: var(--radius-s);
+}
+
+.show-info{
+  flex: 1 1 320px;
+}
+
+.now-playing .title{
+  font-size: 3.5em;
+}
+
+.show-status{
+  display: inline-block;
+  margin: 0 0 var(--space-xs);
+  padding: 2px var(--space-xs);
+  background-color: var(--yellow);
+  color: var(--black);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.now-playing .show-details{
+  color: var(--red);
+  font-size: 1.4em;
+  margin-top: var(--space-xs);
+}
+
+.now-playing .btn{
+  background-color: var(--red);
+  color: var(--white);
+  font-size: 1.25em;
+  margin-top: var(--space-s);
+}
+
+@media screen and (max-width:1200px){
+  .now-playing .title{
+    font-size: 2.5em;
+  }
+}

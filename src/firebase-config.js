@@ -1,10 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js"
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// Loaded only when someone submits the signup form (see SignUpForm.jsx), so
+// visitors who never sign up don't download Firebase or create an account.
+import { initializeApp } from "firebase/app"
+import { getFirestore, collection, addDoc } from "firebase/firestore"
+import { getAuth, signInAnonymously } from "firebase/auth"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,6 +16,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app)
+const signupsRef = collection(getFirestore(app), "Signups")
 
-export const auth = getAuth(app)
-export const db = getFirestore(app)
+// Sign in anonymously once, on the first signup; the Firestore rules only
+// accept writes from signed-in users. A failed sign-in can be retried.
+let signedIn = null
+
+export async function addSignup(newSignup) {
+  signedIn ??= signInAnonymously(auth).catch((error) => {
+    signedIn = null
+    throw error
+  })
+  await signedIn
+  await addDoc(signupsRef, newSignup)
+}

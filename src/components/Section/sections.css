@@ -1,0 +1,125 @@
+/*
+  Each project's own look, keyed by its id in content/home.js.
+  These are starting points; the real artwork and motion for each section
+  goes here. To adjust a section's layout,
+  set --section-art-size, --section-text-size, or --section-align in its block
+  (see Section.css).
+
+  Every section has an angled bottom with its own automatic angle. To set one
+  by hand, add --cut-left / --cut-right to its block (see AngledSection.css).
+  Give each section a --section-bg that contrasts with its neighbors, or the
+  angle won't show.
+*/
+
+.section-art{
+  position: relative;
+  z-index: 2; /* above the angled cuts, so art can spill across them */
+}
+/* Text always stays on top, on a half-see-through panel of the section's
+   own color, so spilling art never makes it hard to read. The negative
+   margin keeps the text where it was. */
+.section-text{
+  position: relative;
+  z-index: 3;
+  padding: var(--space-s);
+  margin: calc(-1 * var(--space-s));
+  background-color: color-mix(in srgb, var(--section-bg, var(--white)) 50%, transparent);
+}
+
+.section--iron-city{
+  --section-bg: var(--blue);
+  color: var(--white);
+}
+.section--iron-city .title{ color: var(--melon); }
+.section--iron-city .subtitle{ color: var(--white); }
+
+.section--dance-party{
+  --section-bg: var(--black);
+  color: var(--white);
+}
+.section--dance-party .subtitle{ color: var(--red); }
+/* The red spiral slowly turning behind the key art (decorative only).
+   Its left edge lines up with the art's, so it stays out of the text
+   column and bleeds off the right side of the page instead. */
+.section--dance-party .section-art::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 140%;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  z-index: -1;
+  background: url(/danceparty-spiral.svg) center / contain no-repeat;
+  animation: spin 60s linear infinite;
+}
+@media (prefers-reduced-motion: reduce){
+  .section--dance-party .section-art::before{
+    animation: none;
+  }
+}
+/* On narrower screens the text sits below the art: keep the spiral centered
+   and closer to the art's size so it doesn't run into the paragraphs or up
+   past the Iron City tape. The art box shrinks to the image's width, so the
+   spiral is sized against the picture rather than the full page width. */
+@media screen and (max-width:1200px){
+  .section--dance-party .section-art{
+    justify-self: start;
+  }
+  .section--dance-party .section-art::before{
+    left: 50%;
+    width: 100%;
+    translate: -50% -50%;
+  }
+}
+
+.section--palamo-drafthouse{
+  --section-bg: var(--white);
+}
+.section--palamo-drafthouse .subtitle{ color: var(--red); }
+
+.section--greatest-party{
+  --section-bg: var(--yellow);
+}
+.section--greatest-party .title{ color: var(--blue); }
+/* The blue blob behind the sunglasses, slowly shifting shape at the same
+   pace as the Dance Party spiral (the morph is built into the SVG). */
+.section--greatest-party .section-art::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 105%;
+  aspect-ratio: 863 / 693;
+  translate: -50% -42%;
+  z-index: -1;
+  background: url(/greatestparty-blob-animated.svg) center / contain no-repeat;
+}
+@media (prefers-reduced-motion: reduce){
+  .section--greatest-party .section-art::before{
+    background-image: url(/greatestparty-blob.svg);
+  }
+}
+.section--greatest-party .subtitle{ color: var(--black); }
+
+.section--reverse-murder-mystery{
+  --section-bg: var(--red);
+  color: var(--white);
+}
+.section--reverse-murder-mystery .title,
+.section--reverse-murder-mystery .subtitle{ color: var(--black); }
+.section--reverse-murder-mystery .section-art img{ filter: grayscale(1); }
+
+.section--beach-episode{
+  --section-bg: var(--black);
+  color: var(--white);
+}
+.section--beach-episode .title{ color: var(--yellow); }
+.section--beach-episode .btn{
+  background-color: var(--yellow);
+  color: var(--black);
+}
+
+@keyframes spin{
+  to{ rotate: 360deg; }
+}

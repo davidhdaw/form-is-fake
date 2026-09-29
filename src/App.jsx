@@ -1,68 +1,43 @@
-import Section from './Components/Section/Section'
-import Columns from './Components/Columns/Columns'
-import Header from './Components/Header/Header'
-import SignUpForm from './Components/SignUp/SignUpForm'
-import './App.css'
-import { auth, db } from './firebase-config'
-import { collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js"
-
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import Header from './components/Header/Header'
+import NowPlaying from './components/NowPlaying/NowPlaying'
+import Section from './components/Section/Section'
+import AngledSection from './components/AngledSection/AngledSection'
+import Marquee from './components/Marquee/Marquee'
+import About from './components/About/About'
+import SignUpForm from './components/SignUp/SignUpForm'
+import Footer from './components/Footer/Footer'
+import { nowPlaying, projectsHeading, projects, signup } from './content/home'
+import shows from './content/nowPlaying.json'
+import { useArrowKeySections } from './utils/useArrowKeySections'
 
 function App() {
+  const { hash } = useLocation()
+  useArrowKeySections()
 
-  signInAnonymously(auth)
-  .then(() => {
-    console.log(auth)
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ...
-  });
-
-  const entriesCollectionRef = collection(db, "Signups")
-
-  const Signup = async (newLog) => {
-    await addDoc(entriesCollectionRef, newLog)
-  }
-
-
-  const BeachEpisode = {
-    title: "Beach Episode",
-    description: ["A one sheet TTRPG about the balance between self care and being down for the cause."],
-    image: "/beachepisode.png",
-    link: "https://formisfake.itch.io/beach-episode",
-    linkText: "Download on itch.io"
-  }
-  
-
-  const IronCity = {
-    title: "Iron City",
-    description: ["Iron City is an immersive experience that takes place in a world where the Fae have returned and you need to help a lawfirm dealing with magical contract law.", 
-    "Guests will explore a world of fairies, magic, and legal jargon in our first ever open to the public immersive show.",
-    "It's as much fun as you can have with the legal profession...Legally!"],
-    image: "/ironcity.png",
-    buttonFunction: 'scroll',
-    linkText: "I'm intrigued and wish to subscribe to your newsletter."
-  }
-
-  const aboutUs = {
-    title: "What on earth?",
-    description: ["We’re a (two person) team of interdisciplinary writers, coders, and artists who make events, games, and spectacles by smushing mediums and genres together."],
-    buttonFunction: 'route',
-    linkText: "What does that even mean?"
-  }
+  // Arriving at a link like /#about (or the old /about page) scrolls to that section.
+  useEffect(() => {
+    if (hash) document.getElementById(hash.slice(1))?.scrollIntoView()
+  }, [hash])
 
   return (
     <>
     <Header />
-    <div>
-      <Section ProjectInfo={aboutUs} />
-      <Section ProjectInfo={IronCity} />
-      <Section ProjectInfo={BeachEpisode} />
-      <Columns />
-      <SignUpForm Signup={Signup} />
-    </div>
+    <main>
+      <h1 className="visually-hidden">Form is Fake</h1>
+      <NowPlaying shows={shows} {...nowPlaying} />
+      <div id="projects">
+        <AngledSection id="previous-projects" className="section-divider">
+          <h2 className="visually-hidden">{projectsHeading}</h2>
+          <Marquee edge="inline" items={Array(10).fill(projectsHeading)} decorative className="marquee-label section-divider-marquee" />
+        </AngledSection>
+        {projects.map((project) => <Section key={project.id} {...project} />)}
+      </div>
+      <About />
+      <SignUpForm {...signup} />
+    </main>
+    <Footer />
     </>
   )
 }

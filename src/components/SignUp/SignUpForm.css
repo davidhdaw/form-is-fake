@@ -1,0 +1,43 @@
+.signup-form-holder{
+  --section-bg: var(--black);
+  color: var(--white);
+  width: 100%;
+  padding-bottom: var(--space-m);
+}
+
+.signup-form form{
+  max-width: 500px;
+  width: 100%;
+}
+
+
+.signup-form input{
+  display:block;
+  width: 100%;
+  margin: 4px 0 var(--space-s) 0;
+  padding: var(--space-xs);
+  background-color: var(--white);
+  border: 1px solid transparent;
+  border-radius: var(--radius-s);
+}
+
+.signup-form input[type="checkbox"]{
+  display: inline;
+  width: auto;
+  scale: 1.4;
+  margin-right: var(--space-xs);
+}
+
+.signup-form .btn{
+  background-color: var(--pink);
+  width: 100%;  
+}
+
+@media screen and (max-width:1200px){
+ .signup-form{
+  width: 100%;
+  padding: var(--space-m);
+  box-sizing: border-box;
+ }
+
+}

@@ -1,0 +1,21 @@
+.about{
+  --section-bg: var(--white);
+  padding-inline: var(--space-m);
+  padding-bottom: var(--space-xl);
+  box-sizing: border-box;
+}
+
+.about .title{
+  color: var(--red);
+  margin-bottom: var(--space-s);
+}
+
+.about-intro{
+  font-size: 1.4em;
+  max-width: 800px;
+}
+
+.about img{
+  max-width:600px;
+  width: 100%;
+}
